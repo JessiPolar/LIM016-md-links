@@ -7,12 +7,11 @@ var MarkdownIt = require('markdown-it'),
 const jsdom = require("jsdom");
 const { JSDOM } = jsdom;
 const fetch = require('node-fetch');
-console.log('Este es el md',{md})
+
 
 //ingreso de ruta
 let ruta = process.argv[2];
-//console.log( ingresoRuta );
-console.log(process.argv[2])
+//console.log(process.argv[2]);
 //Es la ruta absoluta?
 let  convertirRuta = (ruta) => {
     if(path.isAbsolute(ruta)){              // si la ruta es absoluta que me la devuelva y me la imprima 
@@ -106,8 +105,8 @@ const extraerLinksUnicaRuta = (ruta) => {
     return arrDom;
 }
 
-// const linksRuta = extraerLinksUnicaRuta(ruta);
-// console.log(linksRuta);
+ //const linksRuta = extraerLinksUnicaRuta(ruta);
+ //console.log(linksRuta);
 
 // rutas: arreglo de rutas
 const extraerLinksRutas = (rutas) => {
@@ -123,37 +122,10 @@ const linksRutas = extraerLinksRutas(archivos);
 console.log("Los links de las rutas son:", linksRutas);
 console.log("La cantidad de archivos es: ", archivos.length);
 
-//Validar Links
-/*const validarLinks = (result) => {
-    return fetch(result.href)
-    .then(res =>{
-        const status = (res.status == 200) ? res.status : 'FAIL';
-        const objRes = {
-            href: result.href,
-            title: result.title,
-            file: result.file,
-            status: res.status,
-            message: status
-        }
-        return objRes
-    }).catch(rej => {
-        const objRej = {
-            href: result.href,
-            title: result.title,
-            file: result.file,
-            status: rej.status,
-            message: 'FAIL'
 
-        }
-        return objRej
-    })
-    
-}
-console.log(validarLinks(linksRutas))*/
+// VALIDADE
 
-//validade
-
-/*const validarLinksStatus = (links) =>{
+const validarLinksStatus = (links) =>{
     let myPromises = links.map(link => new Promise((resolve) => {
         return fetch(link.href)
             .then(response => {
@@ -175,11 +147,30 @@ console.log(validarLinks(linksRutas))*/
     }));
     return Promise.all(myPromises)
     .then((response) => {
-        return response.length;
+        let ok = 0, rotos = 0;
+        let nombreArchivo;
+        response.forEach(link => {
+            nombreArchivo = link.file;
+            if(link.status == 404) {
+                rotos += 1
+            }else{
+                ok += 1
+            }
+        })
+        if(ok + rotos > 0) {
+            console.log('archivo: ', nombreArchivo);
+            console.log('links correctos = ', ok);
+            console.log('links rotos = ', rotos)
+        }
+        
     })
+
 };
-let res = validarLinksStatus(linksRutas[0]);
-console.log('res = ', res)
+
+
+linksRutas.forEach(links => {
+    validarLinksStatus(links)
+})
 
  const totalLinks = (links) => {
     const totalLinks = links.length;
@@ -188,5 +179,34 @@ console.log('res = ', res)
   
  const uniqueLinks = (links) => {
     const uniqueLinks = [...new Set(links.map(elem => elem.href))].length;
-    return `UNIQUE: ${uniqueLinks}`;
-  }*/
+    return `UNIQUE: ${uniqueLinks}`
+ };
+ 
+//Validar Links
+
+/*const getStatusLink = (linksRutas) => {
+    const arrayLinks = linksRutas.map((elemento) => 
+      fetch(elemento.href)
+        .then((res) => {
+          const data = {
+            href: elemento.href,
+            text: elemento.text, // jala el key "text" del objeto anterior 
+            file: elemento.file,
+            status: res.status, // el método status pertenece a fetch y devuelve un number 
+            message: res.status >= 200 && res.status <= 299 ? 'OK' : 'fail', // Normalmente cuando el status de la peticion http da un numero con base 2 significa que la peticion ha tenido éxito
+          };
+          return data;
+        }).catch((error) => {
+          const data = {
+            href: elemento.href,
+            text: elemento.text,
+            file: elemento.file,
+            status: 'Error ' + error,
+            message: 'fail'
+          };
+          return (data);
+        }));
+    return Promise.all(arrayLinks);
+  };
+ console.log( getStatusLink(linksRutas))
+*/
