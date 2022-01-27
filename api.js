@@ -27,13 +27,13 @@ let  convertirRuta = (ruta) => {
 //console.log(rutaAbsoluta);
 
 //El archivo existe
-
-if(fs.existsSync(ruta)){
+const existeRuta = (ruta) => fs.existsSync(ruta);
+/*if(fs.existsSync(ruta)){
     console.log('El archivo existe');
 }else{
     console.log('El archivo no existe');
     exit()
-}
+}*/
 
 //Es la ruta absoluta un directorio?
 fs.stat(ruta, (error, stats) => {
@@ -113,19 +113,23 @@ const extraerLinksRutas = (rutas) => {
     let links = [];
     rutas.forEach(ruta => {
         let linksDeLaRuta = extraerLinksUnicaRuta(ruta);
+        console.log('length = ', linksDeLaRuta.length)
         links.push(linksDeLaRuta);
     })
+    //links = links.flat()
+    console.log('length = ', links.length)
     return links;
 }
 
 const linksRutas = extraerLinksRutas(archivos);
-console.log("Los links de las rutas son:", linksRutas);
+//console.log("Los links de las rutas son:", linksRutas);
 console.log("La cantidad de archivos es: ", archivos.length);
 
 
 // VALIDADE
 
 const validarLinksStatus = (links) =>{
+    console.log('links = ', links)
     let myPromises = links.map(link => new Promise((resolve) => {
         return fetch(link.href)
             .then(response => {
@@ -172,7 +176,7 @@ linksRutas.forEach(links => {
     validarLinksStatus(links)
 })
 
- const totalLinks = (links) => {
+ /*const totalLinks = (links) => {
     const totalLinks = links.length;
     return `TOTAL: ${totalLinks}`;
   }
@@ -180,6 +184,18 @@ linksRutas.forEach(links => {
  const uniqueLinks = (links) => {
     const uniqueLinks = [...new Set(links.map(elem => elem.href))].length;
     return `UNIQUE: ${uniqueLinks}`
+ };*/
+
+ module.exports = {
+    convertirRuta,
+    existeRuta, 
+    rutaArchivo, 
+    listaDirectorios,
+    filtrarMd,
+    extraerLinksUnicaRuta,
+    extraerLinksRutas,
+    validarLinksStatus, 
+
  };
  
 //Validar Links
