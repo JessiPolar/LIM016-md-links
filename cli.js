@@ -33,7 +33,7 @@ if(arguments.length === 2){
             .catch(err => console.log(err));
         break;
 
-        default:console.log(colors.brightRed('Sorry, the command does not exist. " '));
+        default:console.log(colors.brightRed('Sorry, the command does not exist. '));
         break;
     };
 
@@ -41,27 +41,17 @@ if(arguments.length === 2){
 
 // Si el usuario pone 3 argumentos
 if(arguments.length === 3){
-    if ( arguments[1]=== '--stats' && arguments[2] === '--validate')   {
+    if ( (arguments[1]=== '--stats' && arguments[2] === '--validate') || (arguments[1]=== '--validate' && arguments[2] === '--stats')  )    {
         mdLinks(arguments[0], { validate: true })
             .then(res=> console.log(
-`Total: ${colors.yellow(option.totalLinks(res))} 
-Unique: ${colors.yellow(option.uniqueLinks(res))} 
-Broken: ${colors.yellow(option.brokenLinks(res))}`
+`Total: ${colors.yellow(option.totalLinks(res))}\n`+ 
+`Unique: ${colors.yellow(option.uniqueLinks(res))}\n`+ 
+`Broken: ${colors.yellow(option.brokenLinks(res))}`
             ))
             .catch(err => console.log(err));
-    }
-    else if(arguments[1]=== '--validate' && arguments[2] === '--stats') {
-        
-        mdLinks(arguments[0], { validate: true })
-        .then(res=> console.log(
-`Total: ${colors.yellow(option.totalLinks(res))} 
-Unique: ${colors.yellow(option.uniqueLinks(res))} 
-Broken: ${colors.yellow(option.brokenLinks(res))}`
-        ))
-        .catch(err => console.log(err));
-        
+   
     }else{
-        console.log(colors.brightRed('Sorry, the command does not exist. "'))
+        console.log(colors.brightRed('Sorry, the command does not exist.'))
     }
 }
 
