@@ -16,9 +16,9 @@ let ruta = process.argv[2];
 //El archivo existe
 const existeRuta = (ruta) => fs.existsSync(ruta);
 if(existeRuta(ruta)){
-    console.log('El archivo existe');
+    //console.log('El archivo existe');
 }else{
-    console.log('El archivo no existe');
+    //console.log('El archivo no existe');
     exit()
 }
 //Es la ruta absoluta?
@@ -38,9 +38,9 @@ let  rutaAbsoluta = (ruta) => {
 //Es la ruta absoluta un directorio?
 const rutaDirectorio = (ruta) => fs.statSync(ruta).isDirectory();
 if(rutaDirectorio(ruta)){
-    console.log('El directorio existe');
+    //console.log('El directorio existe');
 }else{
-    console.log('El directorio no existe');
+   // console.log('El directorio no existe');
     
 }
    

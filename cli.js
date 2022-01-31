@@ -25,10 +25,10 @@ if(arguments.length === 2){
         break;
 
         case '--stats':
-            mdLinks(arguments[0], { validate: true })
+            mdLinks(arguments[0], { validate: false })
             .then(res=> console.log(
-              `Total: ${colors.yellow(option.totalLinks(res))} 
-               Unique: ${colors.yellow(option.uniqueLinks(res))}`
+              `Total: ${colors.yellow(option.totalLinks(res))} \n` + 
+               `Unique: ${colors.yellow(option.uniqueLinks(res))}`
              ))
             .catch(err => console.log(err));
         break;

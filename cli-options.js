@@ -11,22 +11,20 @@
 
 
 const totalLinks = (arrayLinks) => {
-  arrayLinks.map(links => links.href).length;
-  return `Total  : ${totalLinks.length}`
-
+  return arrayLinks.length;
 } 
 
 // Función para obtener la cantidad de los links unicos(unique) encontrados en la ruta
 const uniqueLinks = (arrayLinks) => {
     const linksSet = new Set ([]);  // almacena valores únicos irrepetibles
     arrayLinks.forEach((element) => linksSet.add(element.href));
-    return `Unique : ${linksSet.size}`
+    return linksSet.size;
 };
 
 // Función para obtener la cantidad de los links rotos(broken) encontrados en la ruta
 const brokenLinks = (arrayLinks) => {
-  const broken = arrayLinks.filter((e)=> e.message=== 'fail');
-  return `Broken : ${broken.length}`;
+  const broken = arrayLinks.filter((e)=> e.ok === 'FAIL');
+  return broken.length;
 };
 
 /*const statsLinks = (array)=>{
