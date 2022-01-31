@@ -12,47 +12,48 @@ const fetch = require('node-fetch');
 //ingreso de ruta
 let ruta = process.argv[2];
 //console.log(process.argv[2]);
-//Es la ruta absoluta?
-let  convertirRuta = (ruta) => {
-    if(path.isAbsolute(ruta)){              // si la ruta es absoluta que me la devuelva y me la imprima 
-        console.log('La ruta es absoluta');
-        return ruta;
-    }else{
-        ruta= path.resolve(ruta)            // sino es absoluta, que me la convierta a absoluta, me la retorne y me la imprima
-        console.log(ruta);
-        return ruta;
-    }
-};
- ruta = convertirRuta(ruta);
-//console.log(rutaAbsoluta);
 
 //El archivo existe
 const existeRuta = (ruta) => fs.existsSync(ruta);
-/*if(fs.existsSync(ruta)){
+if(existeRuta(ruta)){
     console.log('El archivo existe');
 }else{
     console.log('El archivo no existe');
     exit()
-}*/
+}
+//Es la ruta absoluta?
+let  rutaAbsoluta = (ruta) => {
+    if(path.isAbsolute(ruta)){              // si la ruta es absoluta que me la devuelva y me la imprima 
+        //console.log('La ruta es absoluta');
+        return ruta;
+    }else{
+        ruta= path.resolve(ruta)            // sino es absoluta, que me la convierta a absoluta, me la retorne y me la imprima
+        //console.log(ruta);
+        return ruta;
+    }
+};
+ ruta = rutaAbsoluta(ruta);
+//console.log(ruta);
 
 //Es la ruta absoluta un directorio?
-fs.stat(ruta, (error, stats) => {
-    if(error){
-        console.log(error);
-        return
-    }
-    //console.log(stats.isFile())
-    console.log(stats.isDirectory())
+const rutaDirectorio = (ruta) => fs.statSync(ruta).isDirectory();
+if(rutaDirectorio(ruta)){
+    console.log('El directorio existe');
+}else{
+    console.log('El directorio no existe');
+    
+}
    
-});
 
 //Recursividad..... Leer directorios
 const rutaArchivo = (ruta) => {
     let archivo = fs.lstatSync(ruta);
     let esArchivo = archivo.isFile();
     return esArchivo;
-    //console.log(rutaDirectorio);
+    
 };
+//console.log('Este es el fs.lstatSync: ', rutaArchivo('README.md'));
+
 
 const listaDirectorios = ruta => {
     let arrayDirectorio = [];
@@ -71,7 +72,7 @@ const listaDirectorios = ruta => {
 
 
 let archivos = listaDirectorios(ruta)
-console.log(archivos);
+//console.log(archivos);
 
 
 //Extraer archivos md
@@ -84,7 +85,7 @@ const filtrarMd = (archivos) => {
 }
 
 archivos = filtrarMd(archivos)
-console.log(archivos)
+//console.log(archivos)
 
 
 //console.log(leerContenido(archivos));
@@ -113,116 +114,68 @@ const extraerLinksRutas = (rutas) => {
     let links = [];
     rutas.forEach(ruta => {
         let linksDeLaRuta = extraerLinksUnicaRuta(ruta);
-        console.log('length = ', linksDeLaRuta.length)
+        //console.log('length = ', linksDeLaRuta.length)
         links.push(linksDeLaRuta);
     })
-    //links = links.flat()
-    console.log('length = ', links.length)
+    links = links.flat()
+    //console.log('length = ', links.length)
+    //console.log(links = links.flat())
     return links;
 }
 
 const linksRutas = extraerLinksRutas(archivos);
 //console.log("Los links de las rutas son:", linksRutas);
-console.log("La cantidad de archivos es: ", archivos.length);
-
+//console.log("La cantidad de archivos es: ", archivos.length);
 
 // VALIDADE
 
 const validarLinksStatus = (links) =>{
-    console.log('links = ', links)
-    let myPromises = links.map(link => new Promise((resolve) => {
-        return fetch(link.href)
+    //console.log('links = ', links)
+    let myPromises = links.map(elem=> new Promise((resolve) => {
+        return fetch(elem.href)
             .then(response => {
                 if(response.status >= 200 && response.status <= 299){
-                    link.status = response.status,
-                    link.statustext = response.statustext,
-                    resolve(link);
+                    elem.status = response.status,
+                    elem.ok = "OK"
+                    resolve(elem);
                 }else{
-                    link.status = response.status,
-                    link.statustext = 'FAIL'
-                    resolve(link);
+                    elem.status = response.status,
+                    elem.ok = 'FAIL'
+                    resolve(elem);
                 }
             })
             .catch(() => {
-                link.status = 404,
-                link.statustext = 'FAIL'
-                resolve(link);
+                elem.status = 404,
+                elem.ok = 'FAIL'
+                resolve(elem);
             });  
     }));
     return Promise.all(myPromises)
-    .then((response) => {
-        let ok = 0, rotos = 0;
-        let nombreArchivo;
-        response.forEach(link => {
-            nombreArchivo = link.file;
-            if(link.status == 404) {
-                rotos += 1
-            }else{
-                ok += 1
-            }
-        })
-        if(ok + rotos > 0) {
-            console.log('archivo: ', nombreArchivo);
-            console.log('links correctos = ', ok);
-            console.log('links rotos = ', rotos)
-        }
-        
-    })
-
+    .then((res) => {
+        //console.log(res);
+        return res;
+      })
+      .catch((err)=>{
+        //console.log(err);
+        return err;
+      })
 };
 
-
-linksRutas.forEach(links => {
+/*linksRutas.forEach(links => {
     validarLinksStatus(links)
-})
-
- /*const totalLinks = (links) => {
-    const totalLinks = links.length;
-    return `TOTAL: ${totalLinks}`;
-  }
-  
- const uniqueLinks = (links) => {
-    const uniqueLinks = [...new Set(links.map(elem => elem.href))].length;
-    return `UNIQUE: ${uniqueLinks}`
- };*/
+})*/
 
  module.exports = {
-    convertirRuta,
-    existeRuta, 
+     existeRuta,
+    rutaAbsoluta,
+    rutaDirectorio, 
     rutaArchivo, 
     listaDirectorios,
     filtrarMd,
+    leerContenido,
     extraerLinksUnicaRuta,
     extraerLinksRutas,
-    validarLinksStatus, 
+    validarLinksStatus 
 
  };
  
-//Validar Links
-
-/*const getStatusLink = (linksRutas) => {
-    const arrayLinks = linksRutas.map((elemento) => 
-      fetch(elemento.href)
-        .then((res) => {
-          const data = {
-            href: elemento.href,
-            text: elemento.text, // jala el key "text" del objeto anterior 
-            file: elemento.file,
-            status: res.status, // el método status pertenece a fetch y devuelve un number 
-            message: res.status >= 200 && res.status <= 299 ? 'OK' : 'fail', // Normalmente cuando el status de la peticion http da un numero con base 2 significa que la peticion ha tenido éxito
-          };
-          return data;
-        }).catch((error) => {
-          const data = {
-            href: elemento.href,
-            text: elemento.text,
-            file: elemento.file,
-            status: 'Error ' + error,
-            message: 'fail'
-          };
-          return (data);
-        }));
-    return Promise.all(arrayLinks);
-  };
- console.log( getStatusLink(linksRutas))
-*/

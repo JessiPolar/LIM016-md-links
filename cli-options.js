@@ -1,5 +1,17 @@
+
+
+
+/*let totalLinks = (links) => {
+   totalLinks = links.length;
+  return `Total : ${totalLinks}`;
+}*/
+
+
+
+
+
 const totalLinks = (arrayLinks) => {
-  arrayLinks.map((el) => el.href).length;
+  arrayLinks.map(links => links.href).length;
   return `Total  : ${totalLinks.length}`
 
 } 
