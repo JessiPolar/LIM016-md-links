@@ -11,7 +11,6 @@ const fetch = require('node-fetch');
 
 //ingreso de ruta
 let ruta = process.argv[2];
-//console.log(process.argv[2]);
 
 //El archivo existe
 const existeRuta = (ruta) => fs.existsSync(ruta);
@@ -37,28 +36,19 @@ let  rutaAbsoluta = (ruta) => {
         return ruta;
     }
 };
- //ruta = rutaAbsoluta(ruta);
-//console.log(ruta);
 
-//Es la ruta absoluta un directorio?
+//Es  un directorio?
 const rutaDirectorio = (ruta) => fs.statSync(ruta).isDirectory();
-/*if(rutaDirectorio(ruta)){
-    //console.log('El directorio existe');
-}else{
-   // console.log('El directorio no existe');
-    
-}*/
+
+// Validar si es una archivo 
+const rutaArchivo =(route) => fs.statSync(route).isFile('.md');
+//console.log(rutaArchivo(ruta))
+
+// Validar la extension del archivo
+const rutaExtension = (route) => path.extname(route);
+//console.log(rutaExtension(ruta))
 
 //Recursividad..... Leer directorios
-const rutaArchivo = (ruta) => {
-    let archivo = fs.lstatSync(ruta);
-    let esArchivo = archivo.isFile();
-    return esArchivo;
-    
-};
-//console.log('Este es el fs.lstatSync: ', rutaArchivo('README.md'));
-
-
 const listaDirectorios = ruta => {
     let arrayDirectorio = [];
     if(rutaArchivo(ruta)) {
@@ -103,31 +93,20 @@ const extraerLinksUnicaRuta = (ruta) => {
     return arrDom;
 }
 
- //const linksRuta = extraerLinksUnicaRuta(ruta);
- //console.log(linksRuta);
-
 // rutas: arreglo de rutas
 const extraerLinksRutas = (rutas) => {
     let links = [];
     rutas.forEach(ruta => {
         let linksDeLaRuta = extraerLinksUnicaRuta(ruta);
-        //console.log('length = ', linksDeLaRuta.length)
         links.push(linksDeLaRuta);
     })
     links = links.flat()
-    //console.log('length = ', links.length)
-    //console.log(links = links.flat())
     return links;
 }
-
-//const linksRutas = extraerLinksRutas(archivos);
-//console.log("Los links de las rutas son:", linksRutas);
-//console.log("La cantidad de archivos es: ", archivos.length);
 
 // VALIDADE
 
 const validarLinksStatus = (links) =>{
-    //console.log('links = ', links)
     let myPromises = links.map(elem=> new Promise((resolve) => {
         return fetch(elem.href)
             .then(response => {
@@ -158,16 +137,13 @@ const validarLinksStatus = (links) =>{
       })
 };
 
-/*linksRutas.forEach(links => {
-    validarLinksStatus(links)
-})*/
-
  module.exports = {
-     existeRuta,
-     esRutaAbsoluta,
+    existeRuta,
+    esRutaAbsoluta,
     rutaAbsoluta,
     rutaDirectorio, 
-    rutaArchivo, 
+    rutaArchivo,
+    rutaExtension, 
     listaDirectorios,
     filtrarMd,
     leerContenido,

@@ -63,8 +63,6 @@ describe('esRutaAbsoluta', () =>{
       expect(rutaArchivo('C:\\Users\\USUARIO\\Documents\\LIM016-md-links\\src')).toBeFalsy;
     });
   });
-  
-  //probando 2 
 
   describe('filtrarMd', () => {
     it('debe devolver una extensión .md', () => {
@@ -74,19 +72,7 @@ describe('esRutaAbsoluta', () =>{
       )).toEqual(['C:\\Users\\USUARIO\\Documents\\LIM016-md-links\\README.md']);
     })
   })
-  
 
-  //probando 3
-
-  /*describe('listaDirectorios', () => {
-    it('debe devolver una matriz con rutas absolutas de sus archivos', () => {
-      expect(listaDirectorios('C:\\Users\\USUARIO\\Documents\\LIM016-md-links\\prueba\\prueba-api2')).toEqual([
-        'C:\\Users\\USUARIO\\Documents\\LIM016-md-links\\prueba\\prueba-api2\\calculador.js',
-        'C:\\Users\\USUARIO\\Documents\\LIM016-md-links\\prueba\\prueba-api2\\matematica.js'
-      ]);
-    });
-  });*/
-  //prueba 4
   describe('leerContenido', () => {
     it('is a function', () => {
       expect(typeof leerContenido).toBe('function')
@@ -97,8 +83,6 @@ describe('esRutaAbsoluta', () =>{
       expect(result.trim()).toEqual(`['leerLink']('https://www.marvel.com/404 tiene problemas de funcionamiento')`);
     });
   });
-
-  //prueba 5
 
   describe('listaDirectorios', () => {
     it('debe devolver una matriz de rutas absolutas de archivos .md', ()=> {
@@ -133,8 +117,6 @@ describe('esRutaAbsoluta', () =>{
       expect(extraerLinksUnicaRuta('C:\\Users\\USUARIO\\Documents\\LIM016-md-links\\node_modules\\xml-name-validator\\README.md')).toEqual(output);
     });
   });
-
-  // prueba 5
 
   describe('validarLinksStatus', () => {
     it('debe devolver una matriz con objetos de enlaces de propiedades con su estado', async () => {
@@ -204,5 +186,6 @@ describe('esRutaAbsoluta', () =>{
       return getResult.then((el)=> expect(el).toEqual(output2));
     });
   });
+
   
   

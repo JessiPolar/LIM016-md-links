@@ -12,7 +12,7 @@
     "node-fetch": "^2.6.7"
   },
   "scripts": {
-    "test": "jest",
+    "test": "jest --coverage",
     "dev": "node api.js"
   },
   "keywords": [
