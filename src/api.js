@@ -19,12 +19,17 @@ if(existeRuta(ruta)){
     //console.log('El archivo existe');
 }else{
     //console.log('El archivo no existe');
-    exit()
+    //exit()
+}
+
+const esRutaAbsoluta = (ruta) => {
+    return path.isAbsolute(ruta)
 }
 //Es la ruta absoluta?
 let  rutaAbsoluta = (ruta) => {
-    if(path.isAbsolute(ruta)){              // si la ruta es absoluta que me la devuelva y me la imprima 
+    if(esRutaAbsoluta(ruta)){              // si la ruta es absoluta que me la devuelva y me la imprima 
         //console.log('La ruta es absoluta');
+
         return ruta;
     }else{
         ruta= path.resolve(ruta)            // sino es absoluta, que me la convierta a absoluta, me la retorne y me la imprima
@@ -32,18 +37,17 @@ let  rutaAbsoluta = (ruta) => {
         return ruta;
     }
 };
- ruta = rutaAbsoluta(ruta);
+ //ruta = rutaAbsoluta(ruta);
 //console.log(ruta);
 
 //Es la ruta absoluta un directorio?
 const rutaDirectorio = (ruta) => fs.statSync(ruta).isDirectory();
-if(rutaDirectorio(ruta)){
+/*if(rutaDirectorio(ruta)){
     //console.log('El directorio existe');
 }else{
    // console.log('El directorio no existe');
     
-}
-   
+}*/
 
 //Recursividad..... Leer directorios
 const rutaArchivo = (ruta) => {
@@ -71,10 +75,6 @@ const listaDirectorios = ruta => {
 };
 
 
-let archivos = listaDirectorios(ruta)
-//console.log(archivos);
-
-
 //Extraer archivos md
 
 const filtrarMd = (archivos) => {
@@ -83,9 +83,6 @@ const filtrarMd = (archivos) => {
     })
     
 }
-
-archivos = filtrarMd(archivos)
-//console.log(archivos)
 
 
 //console.log(leerContenido(archivos));
@@ -123,7 +120,7 @@ const extraerLinksRutas = (rutas) => {
     return links;
 }
 
-const linksRutas = extraerLinksRutas(archivos);
+//const linksRutas = extraerLinksRutas(archivos);
 //console.log("Los links de las rutas son:", linksRutas);
 //console.log("La cantidad de archivos es: ", archivos.length);
 
@@ -167,6 +164,7 @@ const validarLinksStatus = (links) =>{
 
  module.exports = {
      existeRuta,
+     esRutaAbsoluta,
     rutaAbsoluta,
     rutaDirectorio, 
     rutaArchivo, 
