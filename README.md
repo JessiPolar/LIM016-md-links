@@ -1,5 +1,12 @@
 # Markdown Links
 
+## Diagrama de flujo
+
+[![api.png](https://i.postimg.cc/52CRfD0F/api.png)](https://postimg.cc/5Xf3378x)
+[![flujogramadrawio-CLI.png](https://i.postimg.cc/4yFH2LRJ/flujogramadrawio-CLI.png)](https://postimg.cc/wRLB7kBP)
+
+
+
 ## Índice
 
 * [1. Preámbulo](#1-preámbulo)
