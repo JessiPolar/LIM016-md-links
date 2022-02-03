@@ -3,8 +3,7 @@
 ## Diagrama de flujo
 
 [![api.png](https://i.postimg.cc/52CRfD0F/api.png)](https://postimg.cc/5Xf3378x)
-[![flujogramadrawio-CLI.png](https://i.postimg.cc/4yFH2LRJ/flujogramadrawio-CLI.png)](https://postimg.cc/wRLB7kBP)
-
+[![flujogramadrawio-Page-1-drawio-1.png](https://i.postimg.cc/9f76t7X4/flujogramadrawio-Page-1-drawio-1.png)](https://postimg.cc/QBjYjVTs)
 
 
 ## Índice
